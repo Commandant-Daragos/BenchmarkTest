@@ -9,6 +9,7 @@ namespace BenchmarkTest
     [MemoryDiagnoser]
     public class BenchmarkTestClass
     {
+        private const int MAXRANGE = 1_000_001; //1_000_001 representing 1000001 iterations, one more is because max range takes number thats 1 less
         [Benchmark]
         public void ListAllVehicleInfoInheritance()
         {
@@ -17,11 +18,13 @@ namespace BenchmarkTest
             var plane = new PlaneInheritance();
 
             List<Vehicle> vehicles = new List<Vehicle> { bicycle, car, plane };
-
-            foreach (var vehicle in vehicles)
+            Enumerable.Range(0, MAXRANGE).ToList().ForEach(_ =>
             {
-                vehicle.GetWheelsCount();
-            }
+                foreach (var vehicle in vehicles)
+                {
+                    vehicle.GetWheelsCount();
+                }
+            });
         }
 
         [Benchmark]
@@ -32,11 +35,13 @@ namespace BenchmarkTest
             var plane = new PlaneInterface();
 
             List<IVehicle> vehicles = new List<IVehicle> { bicycle, car, plane };
-
-            foreach (var vehicle in vehicles)
+            Enumerable.Range(0, MAXRANGE).ToList().ForEach(_ =>
             {
-                vehicle.GetWheelsCount();
-            }
+                foreach (var vehicle in vehicles)
+                {
+                    vehicle.GetWheelsCount();
+                }
+            });
 
             //bicycle.GetWheelsCount();
             //car.GetWheelsCount();
